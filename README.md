@@ -1,0 +1,1 @@
+# Symfony Security Component as a Standalone

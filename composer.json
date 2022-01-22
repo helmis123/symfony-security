@@ -1,0 +1,29 @@
+{
+  "name": "app/secutity",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "helmi"
+    }
+  ],
+  "require-dev": {
+    "symfony/var-dumper": "6.1.*"
+  },
+  "require": {
+    "symfony/security-core": "6.1.*",
+    "symfony/security-http": "6.1.*",
+    "symfony/security-csrf": "6.1.*",
+    "symfony/http-foundation": "6.1.*",
+    "symfony/http-kernel": "6.1.*",
+    "symfony/error-handler": "6.1.*",
+    "symfony/event-dispatcher": "6.1.*",
+    "symfony/rate-limiter": "6.1.*",
+    "symfony/dependency-injection": "6.1.x-dev",
+    "symfony/routing": "6.1.x-dev"
+  },
+  "minimum-stability": "dev"
+}
