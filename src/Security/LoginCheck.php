@@ -27,14 +27,18 @@ use Symfony\Component\Security\Http\RememberMe\PersistentRememberMeHandler;
 class LoginCheck
 {
 
-    public static function getToken(Request $request, Response $response, UserProvider $userProvider, CsrfTokenManager $csrfTokenManager) : ?TokenInterface
-    {
+    public static function getToken(
+        Request $request,
+        Response $response,
+        UserProvider $userProvider,
+        AppAuthenticator $appAuthenticator
+    ): ?TokenInterface {
         $token = null;
-        if($request->request->get('_username') && $request->request->get('_password')){
+        if ($request->request->get('_username') && $request->request->get('_password')) {
             $passwordHasherFactory = new PasswordHasherFactory([User::class => new Pbkdf2PasswordHasher()]);
             $user = UserHelper::getUserFromRequest($request, $passwordHasherFactory);
             // authenticate
-            $appAuthenticator = new AppAuthenticator();
+
             // generate passport
             $passport = $appAuthenticator->authenticate($request);
             // UserProvider check passport
@@ -52,7 +56,9 @@ class LoginCheck
             $KernelBrowser = new KernelBrowser();
             $token = $KernelBrowser->loginUser($user, $request);
             $passwordMigratingListener = new PasswordMigratingListener($passwordHasherFactory);
-            $LoginSuccessEvent = new LoginSuccessEvent($appAuthenticator, $passport, $token, $request, $response, 'main');
+            $LoginSuccessEvent = new LoginSuccessEvent(
+                $appAuthenticator, $passport, $token, $request, $response, 'main'
+            );
             $passwordMigratingListener->onLoginSuccess($LoginSuccessEvent);
             // Remember Me Listener
             $inMemoryTokenProvider = new InMemoryTokenProvider();
@@ -70,7 +76,9 @@ class LoginCheck
                 null
             );
             $rememberMeListener = new RememberMeListener($rememberMeHandler);
-            $loginSuccessEvent = new LoginSuccessEvent($appAuthenticator, $passport, $token, $request, $response, 'main');
+            $loginSuccessEvent = new LoginSuccessEvent(
+                $appAuthenticator, $passport, $token, $request, $response, 'main'
+            );
             $rememberMeListener->onSuccessfulLogin($loginSuccessEvent);
 //            $userChecker = new InMemoryUserChecker($user);
 //            $userCheckerListener = new UserCheckerListener($userChecker);
